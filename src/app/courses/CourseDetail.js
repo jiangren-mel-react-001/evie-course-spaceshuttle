@@ -8,28 +8,33 @@ export default class CourseDetail extends React.Component {
         this.onDelete = this.onDelete.bind(this);
     }
     onDelete(event) {
-        axios.delete(`https://jr-001-pawpatrol-course-api.herokuapp.com/api/courses/${this.props.detail.id}`)
+        const {detail} = this.props.location.state;
+        axios.delete(`https://jr-001-pawpatrol-course-api.herokuapp.com/api/courses/${detail.id}`)
             .then(response => this.props.history.push('/courses'))
             .catch(err => console.log(err));
     }
     render() {
-        return (
-            <div className="container">
-                <h2>{this.props.detail.name}</h2>
-                <p>{this.props.detail.description}</p>
-                <img src={this.props.detail.image} alt={this.props.detail.name} className="img-responsive"/>
- 
-                 <div>
-                 <Link className="btn btn-primary" to={{
+        const {detail} = this.props.location.state;
+        const {token} = this.props;
+        const editButtons = token && (
+            <div>
+                <Link className="btn btn-primary" to={{
                     pathname: '/courses/edit',
                     state: { detail: this.props.detail }
-                 }}>
+                }}>
                     Edit
                 </Link>
                 <button className="btn btn-danger" onClick={this.onDelete}>
                     Delete
                 </button>
-                </div>
+            </div>
+        );
+        return (
+            <div className="container">
+                <h2>{detail.name}</h2>
+                <p>{detail.description}</p>
+                <img src={detail.image} alt={detail.name} className="img-responsive" />
+                {editButtons}
             </div>
         );
     }

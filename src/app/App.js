@@ -5,7 +5,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
+import { BrowserRouter as Router, Switch } from 'react-router-dom'; 
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { CourseContainer } from './courses/CourseContainer';
@@ -17,6 +17,8 @@ import CourseEdit from './courses/CourseEdit';
 import CourseCreate from './courses/CourseCreate';
 
 import { Login } from './login/Login';
+
+import { PublicRoute, AuthRoute } from './shared/AuthRoute';
 
 class App extends Component {
 
@@ -56,42 +58,47 @@ class App extends Component {
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-              <Nav>
-                <LinkContainer to="/courses">
-                  <NavItem>Courses</NavItem>
-                </LinkContainer>
-                <LinkContainer to="/students">
-                  <NavItem>Students</NavItem>
-                </LinkContainer>
-                <LinkContainer to="/teachers">
-                  <NavItem>Teachers</NavItem>
-                </LinkContainer>
+              <Nav>  
+                <NavItem>
+                  <LinkContainer to="/courses">
+                    <NavItem>Courses</NavItem>
+                  </LinkContainer>
+                </NavItem>
+                <NavItem>
+                  <LinkContainer to="/students">
+                    <NavItem>Students</NavItem>
+                  </LinkContainer>
+                </NavItem>
+                <NavItem>
+                  <LinkContainer to="/teachers">
+                    <NavItem>Teachers</NavItem>
+                  </LinkContainer>
+                </NavItem>
               </Nav>
               <Nav pullRight>
-                {loginLink}
+                <NavItem>
+                  {loginLink}
+                </NavItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
 
           <Switch>
-            <Route exact path="/" component={CourseContainer} />
-            <Route exact path="/login" render={
-                props => <Login onTokenChanged={this.onTokenChanged} {...props} />} />
-            <Route path="/courses" render={props => <CourseContainer {...props} />} />
-            <Route path="/students" component={StudentContainer} />
-            <Route path="/teachers" component={TeacherContainer} />
-
-            <Route exact path="/courses/create" render={
-                    ({ history }) =><CourseCreate history={history} />
-            } />
-            <Route exact path="/courses/detail" render={
-                ({ location, history }) => <CourseDetail detail={location.state.detail}
-                history={history}/>
-            }/>
-            <Route exact path="/courses/edit" render={
-                ({ location, history }) => <CourseEdit detail={location.state.detail} history={history} />
-            }/>
-
+            <PublicRoute exact path="/" token={this.state.token} componentRender={{component: CourseContainer}} />
+            <PublicRoute exact path="/login" token={this.state.token} componentRender={{
+              component: Login,
+              onTokenChanged: this.onTokenChanged
+            }} />
+            <PublicRoute exact path="/courses" token={this.state.token} componentRender={{component: CourseContainer}} />
+            <AuthRoute exact path="/teachers" token={this.state.token}
+              componentRender={{component: TeacherContainer}} />
+            <AuthRoute exact path="/students" token={this.state.token}
+              componentRender={{component: StudentContainer}} />
+            <AuthRoute exact path="/courses/create" token={this.state.token}
+              componentRender={{component: CourseCreate}} />
+            <PublicRoute exact path="/courses/detail" token={this.state.token} componentRender={{component: CourseDetail}} />
+            <AuthRoute exact path="/courses/edit" token={this.state.token}
+              componentRender={{component: CourseEdit}} />
           </Switch>
         </div>
       </Router>
