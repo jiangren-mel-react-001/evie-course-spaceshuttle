@@ -17,6 +17,7 @@ export default class CourseDetail extends React.Component {
             <div className="container">
                 <h2>{this.props.detail.name}</h2>
                 <p>{this.props.detail.description}</p>
+                <img src={this.props.detail.image} alt={this.props.detail.name} className="img-responsive"/>
  
                  <div>
                  <Link className="btn btn-primary" to={{

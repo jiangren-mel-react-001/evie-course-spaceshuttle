@@ -52,7 +52,7 @@ export class CourseContainer extends React.Component {
                 <div className="row">
                     <Link className="btn btn-primary" to="/courses/create">Add a new course</Link>
                 </div>
-                <div className="row">
+                <div className="row align-items-center">
                     {courses}
                 </div>
             </div>

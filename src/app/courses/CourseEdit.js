@@ -18,7 +18,8 @@ export default class CourseEdit extends React.Component {
         event.preventDefault();
         axios.put(`https://jr-001-pawpatrol-course-api.herokuapp.com/api/courses/${this.state.id}`, {
             name: this.state.name,
-            description: this.state.description
+            description: this.state.description,
+            image: this.state.image
         }).then(({data}) => {
             this.props.history.push({
                 pathname: `/courses/detail`,
@@ -42,6 +43,14 @@ export default class CourseEdit extends React.Component {
                     <textarea type="text" className="form-control" 
                         name="description" 
                         value={this.state.description} 
+                        onChange={this.onInputChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Course image</label>
+                    <textarea type="text" className="form-control" 
+                        name="image" 
+                        value={this.state.image} 
                         onChange={this.onInputChange}
                     />
                 </div>
