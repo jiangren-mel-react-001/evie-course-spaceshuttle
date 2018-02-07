@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const StudentsContainer = (props) => (
+export const StudentContainer = (props) => (
     <h1>Students</h1>
 );

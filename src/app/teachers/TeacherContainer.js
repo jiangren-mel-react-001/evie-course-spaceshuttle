@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const TeachersContainer = (props) => (
+export const TeacherContainer = (props) => (
     <h1>Teachers</h1>
 );
